@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   it { is_expected.to validate_presence_of(:phone_no) }
+  it { is_expected.to validate_presence_of(:first_name) }
+  it { is_expected.to validate_presence_of(:last_name) }
+  it { is_expected.to have_many(:api_requests) }
 
   describe 'validate unqiueness' do
     subject { build(:user) }
