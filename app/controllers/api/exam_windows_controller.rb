@@ -1,6 +1,6 @@
 class Api::ExamWindowsController < ApplicationController
   rescue_from ActionController::ParameterMissing, with: :missing_param_error
-  before_action :validate_exam
+  before_action :validate_params_type, :validate_exam
 
   def create
     exam_window = ExamWindow.new(
@@ -30,12 +30,18 @@ class Api::ExamWindowsController < ApplicationController
     end
   end
 
+  def validate_params_type
+    unless create_params[:exam_start_time].is_a?(String)  &&  create_params[:exam_end_time].is_a?(String) && create_params[:exam_id].is_a?(Integer)
+      render json: { error: I18n.t('controller.api.exam_windows.create.invalid_data_type') }, status: :bad_request
+    end
+  end
+
   def validate_exam
     exam = Exam.find_by(id: create_params[:exam_id])
     render json: { error: I18n.t('controller.api.exam_windows.create.invalid_exam_failure') }, status: :bad_request unless exam
   end
 
   def missing_param_error
-    render json: { error: I18n.t('controller.api.exam_windows.create.paramete_missing_error') }, status: :bad_request
+    render json: { error: I18n.t('controller.api.exam_windows.create.parameter_missing_error') }, status: :bad_request
   end
 end

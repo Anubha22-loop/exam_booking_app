@@ -60,7 +60,8 @@ en:
           success: "Exam Window created successfully"
           exam_window_creation_failure: "Failed to create Examination Window"
           invalid_exam_failure: "Exam with the given ID not found"
-          paramete_missing_error: "Required parameter are missing"
+          parameter_missing_error: "Required parameter are missing"
+          invalid_data_type: "Invalid data types for one or more params"
   model:
     user:
       errors:
