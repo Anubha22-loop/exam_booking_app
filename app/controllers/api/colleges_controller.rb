@@ -1,6 +1,8 @@
 class Api::CollegesController < ApplicationController
+  # Validate request parameter type before creating a college
   before_action :validate_params_type, only: [:create]
 
+  # Create a new college
   def create
     college = College.new(name: create_params[:college_name])
 
@@ -13,6 +15,7 @@ class Api::CollegesController < ApplicationController
 
   private
 
+  # Sanitize and whitelist request parameters
   def create_params
     params.permit(
       :college_name

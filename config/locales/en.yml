@@ -66,3 +66,6 @@ en:
     exam_booking:
       errors:
         invalid_user_and_exam: "has already booked this exam"
+    exam_window:
+      errors:
+        invalid_window: "must be after the start time"

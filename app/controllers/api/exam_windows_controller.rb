@@ -1,6 +1,8 @@
 class Api::ExamWindowsController < ApplicationController
+  # Validate request parameters type and exam existence before creating an exam window
   before_action :validate_params_type, :validate_exam, only: [:create]
 
+  # Create a new exam window
   def create
     exam_window = ExamWindow.new(
       start_time: create_params[:exam_start_time].to_datetime,
@@ -17,6 +19,7 @@ class Api::ExamWindowsController < ApplicationController
 
   private
 
+  # Sanitize and whitelist request parameters
   def create_params
     params.permit(
       :exam_start_time,
@@ -35,6 +38,7 @@ class Api::ExamWindowsController < ApplicationController
     end
   end
 
+  # Validate the existence of the exam
   def validate_exam
     exam = Exam.find_by(id: create_params[:exam_id])
     unless exam

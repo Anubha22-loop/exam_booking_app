@@ -1,8 +1,11 @@
 class Api::UsersController < ApplicationController
+  # Validate request parameters type before creating a user
   before_action :validate_params_type, only: [:create]
+
+  # Validate college, exam, and exam window before creating a user
   before_action :validate_college, :validate_exam, :validate_exam_window, only: [:create]
 
-
+  # Create a new user or find and existing user and associate them with an exam and create booking
   def create
     user = User.find_or_initialize_by(
           first_name: create_params[:first_name],
@@ -29,6 +32,7 @@ class Api::UsersController < ApplicationController
 
   private
 
+  # Sanitize and whitelist request parameters
   def create_params
     params.permit(
       :first_name,
@@ -59,6 +63,7 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  # Validate the existence of the college
   def validate_college
     @college = College.find_by(id: create_params[:college_id])
     unless @college
@@ -66,6 +71,7 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  # Validate the existence of the exam and its association with the college
   def validate_exam
     @exam = Exam.find_by(id: create_params[:exam_id])
     unless @exam && @exam.college_id == create_params[:college_id]
@@ -73,6 +79,7 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  # Validate that the start time falls within the exam window
   def validate_exam_window
     exam_window = @exam.exam_window
     exam_time_range = exam_window&.start_time..exam_window&.end_time
