@@ -1,24 +1,29 @@
-# README
+# Exam Booking APP
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Requirements:
 
-Things you may want to cover:
+* Ruby version -- 3.2.2
+  * `brew install rbenv`
+  * follow whatever is in `rbenv init`
+  * Restart terminal
+  * `rbenv insatll 3.2.2`
+* Rails version -- 7.0.8
+  * `gem install rails --version 7.0.8`
 
-* Ruby version
+### Setup
 
-* System dependencies
+1. git clone <this project's url>
+2. bundle install
+3. bundle exec rake db:create`
+4. bundle exec rake db:migrate`
+5. `rspec` to run all test cases
 
-* Configuration
+### API's
 
-* Database creation
+1. /api/users - To create exam booking either by creating user or finding existing user
+2. /api/exams - To record exams in the db
+3. /api/colleges - To record college in the db
+4. /api/exam_windows - To record exam window related to exams in the db
 
-* Database initialization
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
