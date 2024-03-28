@@ -1,10 +1,9 @@
 class Api::UsersController < ApplicationController
-  before_action :validate_params_type
-  before_action :validate_college, :validate_exam, :validate_exam_window
+  before_action :validate_params_type, only: [:create]
+  before_action :validate_college, :validate_exam, :validate_exam_window, only: [:create]
 
 
   def create
-
     user = User.find_or_initialize_by(
           first_name: create_params[:first_name],
           last_name: create_params[:last_name],
@@ -61,21 +60,21 @@ class Api::UsersController < ApplicationController
   end
 
   def validate_college
-    college = College.find_by(id: create_params[:college_id])
-    unless college
+    @college = College.find_by(id: create_params[:college_id])
+    unless @college
       raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.invalid_college_failure'))
     end
   end
 
   def validate_exam
-    exam = Exam.find_by(id: create_params[:exam_id])
-    unless exam && exam.college_id == create_params[:college_id]
+    @exam = Exam.find_by(id: create_params[:exam_id])
+    unless @exam && @exam.college_id == create_params[:college_id]
       raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.invalid_exam_failure'))
     end
   end
 
   def validate_exam_window
-    exam_window = Exam.find_by(id: create_params[:exam_id])&.exam_window
+    exam_window = @exam.exam_window
     exam_time_range = exam_window&.start_time..exam_window&.end_time
     unless exam_time_range.cover?(create_params[:start_time].to_datetime)
       raise Errors::BadRequestError.new( I18n.t('controller.api.users.create.invalid_exam_time_failure'))

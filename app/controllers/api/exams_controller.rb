@@ -1,5 +1,5 @@
 class Api::ExamsController < ApplicationController
-  before_action :validate_params_type, :validate_college
+  before_action :validate_params_type, :validate_college, only: [:create]
 
   def create
     exam = Exam.new(

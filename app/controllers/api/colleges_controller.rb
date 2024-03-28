@@ -1,10 +1,8 @@
 class Api::CollegesController < ApplicationController
-  before_action :validate_params_type
+  before_action :validate_params_type, only: [:create]
 
   def create
-    college = College.new(
-      name: create_params[:college_name]
-    )
+    college = College.new(name: create_params[:college_name])
 
     if college.save
       render json: { message: I18n.t('controller.api.colleges.create.success') }, status: :ok

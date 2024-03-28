@@ -1,5 +1,5 @@
 class Api::ExamWindowsController < ApplicationController
-  before_action :validate_params_type, :validate_exam
+  before_action :validate_params_type, :validate_exam, only: [:create]
 
   def create
     exam_window = ExamWindow.new(
@@ -30,7 +30,7 @@ class Api::ExamWindowsController < ApplicationController
   end
 
   def validate_params_type
-    unless create_params[:exam_start_time].is_a?(String)  &&  create_params[:exam_end_time].is_a?(String) && create_params[:exam_id].is_a?(Integer)
+    unless create_params[:exam_start_time].is_a?(String) && create_params[:exam_end_time].is_a?(String) && create_params[:exam_id].is_a?(Integer)
       raise Errors::BadRequestError.new(I18n.t('controller.api.exam_windows.create.invalid_data_type'))
     end
   end
