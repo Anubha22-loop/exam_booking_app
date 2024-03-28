@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_28_113113) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_28_121621) do
   create_table "colleges", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -24,6 +24,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_28_113113) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_exam_bookings_on_exam_id"
+    t.index ["user_id", "exam_id"], name: "index_exam_bookings_on_user_id_and_exam_id", unique: true
     t.index ["user_id"], name: "index_exam_bookings_on_user_id"
   end
 

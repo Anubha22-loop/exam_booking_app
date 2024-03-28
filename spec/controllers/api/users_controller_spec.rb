@@ -5,40 +5,61 @@ RSpec.describe Api::UsersController, type: :controller do
     let(:college) { create(:college) }
     let(:exam) { create(:exam, college: college)}
     let!(:exam_window) { create(:exam_window, exam: exam)}
-    context 'With valid request' do
-      let(:api_request) {
-        {
-          :first_name => 'test',
-          :last_name => 'user',
-          :phone_number => '1234567890',
-          :college_id => college.id,
-          :exam_id => exam.id,
-          :start_time => '2022-01-01T10:00:00'
-        }
-      }
 
+    context 'With valid request' do
       it 'should give status code 200 and successful message' do
+        api_request = {
+            :first_name => 'test',
+            :last_name => 'user',
+            :phone_number => '1234567890',
+            :college_id => college.id,
+            :exam_id => exam.id,
+            :start_time => '2022-01-01T10:00:00'
+          }
         post :create, params: api_request
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['message']).to eq("User created successfully")
       end
 
       it 'should create user if not exist' do
+        api_request = {
+            :first_name => 'test',
+            :last_name => 'user',
+            :phone_number => '1234567890',
+            :college_id => college.id,
+            :exam_id => exam.id,
+            :start_time => '2022-01-01T10:00:00'
+          }
         expect { post :create, params: api_request }.to change{ User.count }.by(1)
         user = User.last
         expect(user.phone_no).to eq(api_request[:phone_number])
       end
 
       it 'should increase the count of create api_request by one' do
+        api_request = {
+            :first_name => 'test',
+            :last_name => 'user',
+            :phone_number => '1234567890',
+            :college_id => college.id,
+            :exam_id => exam.id,
+            :start_time => '2022-01-01T10:00:00'
+          }
         expect { post :create, params: api_request }.to change{ ExamBooking.count }.by(1)
         booking = ExamBooking.last
         expect(booking.exam_start_time).to eq(api_request[:start_time].to_datetime)
       end
 
       it 'should not create user if already exist' do
+        api_request = {
+            :first_name => 'test',
+            :last_name => 'user',
+            :phone_number => '1234567890',
+            :college_id => college.id,
+            :exam_id => exam.id,
+            :start_time => '2022-01-01T10:00:00'
+          }
         user = User.create(first_name: api_request[:first_name], last_name: api_request[:last_name], phone_no: api_request[:phone_number])
         expect { post :create, params: api_request }.not_to change{ User.count }
-        expect { post :create, params: api_request }.to change{ ExamBooking.count }.by(1)
       end
     end
 

@@ -63,3 +63,6 @@ en:
       errors:
         invalid_phone_number_length: "should be 10 digits long"
         invalid_phone_number: "should contain only numeric characters"
+    exam_booking:
+      errors:
+        invalid_user_and_exam: "has already booked this exam"
