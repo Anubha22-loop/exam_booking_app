@@ -39,8 +39,8 @@ RSpec.describe Api::ExamsController, type: :controller do
             :college_id => 4
           }
           post :create, params: request
-          expect(response).to have_http_status(:bad_request)
-          expect(JSON.parse(response.body)['error']).to eq("College with the given ID not found")
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)['error']).to eq("College with the given ID not found")
       end
 
       it 'gives bad request if user creation fails' do
@@ -52,8 +52,8 @@ RSpec.describe Api::ExamsController, type: :controller do
             :college_id => college.id,
           }
           post :create, params: request
-          expect(response).to have_http_status(:bad_request)
-          expect(JSON.parse(response.body)['error']).to eq("Failed to create exam")
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)['error']).to eq("Failed to create exam")
       end
     end
   end

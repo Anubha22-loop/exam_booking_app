@@ -36,9 +36,9 @@ RSpec.describe Api::CollegesController, type: :controller do
           {
             :college_name => 'random college'
           }
-          post :create, params: request
-          expect(response).to have_http_status(:bad_request)
-          expect(JSON.parse(response.body)['error']).to eq("Failed to create College")
+        post :create, params: request
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)['error']).to eq("Failed to create College")
       end
     end
   end
