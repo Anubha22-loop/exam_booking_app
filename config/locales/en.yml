@@ -37,7 +37,6 @@ en:
           success: "User created successfully"
           exam_booking_creation_failure: "Failed to associate User with the Exam"
           user_creation_failure: "Failed to create user"
-          parameter_missing_error: "Required parameter are missing"
           invalid_college_failure: "College with the given ID not found"
           invalid_exam_failure: "Exam with the given ID not found or does not belong to the College"
           invalid_exam_time_failure: "Requested start time does not fall within the Exam's time window"
@@ -46,21 +45,18 @@ en:
         create:
           success: "Exam created successfully"
           exam_creation_failure: "Failed to create exam"
-          parameter_missing_error: "Required parameter are missing"
           invalid_college_failure: "College with the given ID not found"
           invalid_data_type: "Invalid data types for one or more params"
       colleges:
         create:
           success: "College created successfully"
           college_creation_failure: "Failed to create College"
-          parameter_missing_error: "Required parameter are missing"
           invalid_data_type: "Invalid data types for one or more params"
       exam_windows:
         create:
           success: "Exam Window created successfully"
           exam_window_creation_failure: "Failed to create Examination Window"
           invalid_exam_failure: "Exam with the given ID not found"
-          parameter_missing_error: "Required parameter are missing"
           invalid_data_type: "Invalid data types for one or more params"
   model:
     user:

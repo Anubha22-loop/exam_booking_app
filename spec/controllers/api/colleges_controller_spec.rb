@@ -27,7 +27,7 @@ RSpec.describe Api::CollegesController, type: :controller do
         request = { }
         post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
-        expect(JSON.parse(response.body)['error']).to eq("Required parameter are missing")
+        expect(JSON.parse(response.body)['error']).to include("param is missing or the value is empty")
       end
 
       it 'gives bad request if datatype for params are incorrect' do

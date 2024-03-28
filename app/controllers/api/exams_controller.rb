@@ -1,5 +1,4 @@
 class Api::ExamsController < ApplicationController
-  rescue_from ActionController::ParameterMissing, with: :missing_param_error
   before_action :validate_params_type, :validate_college
 
   def create
@@ -38,9 +37,5 @@ class Api::ExamsController < ApplicationController
     unless college
       raise Errors::BadRequestError.new(I18n.t('controller.api.exams.create.invalid_college_failure'))
     end
-  end
-
-  def missing_param_error
-    render json: { error: I18n.t('controller.api.exams.create.parameter_missing_error') }, status: :bad_request
   end
 end

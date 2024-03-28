@@ -1,5 +1,4 @@
 class Api::UsersController < ApplicationController
-  rescue_from ActionController::ParameterMissing, with: :missing_param_error
   before_action :validate_params_type
   before_action :validate_college, :validate_exam, :validate_exam_window
 
@@ -59,10 +58,6 @@ class Api::UsersController < ApplicationController
 
       raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.invalid_data_type'))
     end
-  end
-
-  def missing_param_error
-    render json: { error: I18n.t('controller.api.users.create.parameter_missing_error') }, status: :bad_request
   end
 
   def validate_college

@@ -30,7 +30,7 @@ RSpec.describe Api::ExamWindowsController, type: :controller do
         request = { :exam_start_time => '2022-01-01T10:00:00', :exam_end_time => '2022-01-02T10:00:00' }
         post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
-        expect(JSON.parse(response.body)['error']).to eq("Required parameter are missing")
+        expect(JSON.parse(response.body)['error']).to include("param is missing or the value is empty")
       end
 
       it 'gives bad request if datatype for any params is incorrect' do

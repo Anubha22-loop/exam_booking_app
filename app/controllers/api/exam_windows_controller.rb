@@ -1,5 +1,4 @@
 class Api::ExamWindowsController < ApplicationController
-  rescue_from ActionController::ParameterMissing, with: :missing_param_error
   before_action :validate_params_type, :validate_exam
 
   def create
@@ -41,9 +40,5 @@ class Api::ExamWindowsController < ApplicationController
     unless exam
       raise Errors::BadRequestError.new(I18n.t('controller.api.exam_windows.create.invalid_exam_failure'))
     end
-  end
-
-  def missing_param_error
-    render json: { error: I18n.t('controller.api.exam_windows.create.parameter_missing_error') }, status: :bad_request
   end
 end
