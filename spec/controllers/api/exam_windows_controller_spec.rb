@@ -41,8 +41,7 @@ RSpec.describe Api::ExamWindowsController, type: :controller do
       end
 
       it 'gives bad request if exam doesnot exist for the given exam_id' do
-        request = 
-          {
+        request = {
             :exam_start_time => '2022-01-01T10:00:00',
             :exam_end_time => '2022-01-02T10:00:00',
             :exam_id => 5
@@ -52,11 +51,23 @@ RSpec.describe Api::ExamWindowsController, type: :controller do
           expect(JSON.parse(response.body)['error']).to eq("Exam with the given ID not found")
       end
 
+      it 'gives bad request if date is send as aplha numeric creation fails' do
+        exam = create(:exam)
+        allow_any_instance_of(ExamWindow).to receive(:save).and_return(false)
+        request = {
+          :exam_start_time => '2022-01-01T10:00:00',
+          :exam_end_time => 'abc',
+          :exam_id => exam.id
+        }
+        post :create, params: request, as: :json
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)['error']).to eq("invalid date")
+      end
+
       it 'gives bad request if Exam Window creation fails' do
         exam = create(:exam)
         allow_any_instance_of(ExamWindow).to receive(:save).and_return(false)
-        request = 
-        {
+        request = {
           :exam_start_time => '2022-01-01T10:00:00',
           :exam_end_time => '2022-01-02T10:00:00',
           :exam_id => exam.id
