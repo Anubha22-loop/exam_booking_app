@@ -11,6 +11,8 @@ class Api::ExamWindowsController < ApplicationController
     )
 
     if exam_window.save
+
+      Rails.logger.info I18n.t('controller.api.exam_windows.create.success')
       render json: { message: I18n.t('controller.api.exam_windows.create.success') }, status: :ok
     else
       raise Errors::BadRequestError.new(I18n.t('controller.api.exam_windows.create.exam_window_creation_failure'))

@@ -20,6 +20,8 @@ class Api::UsersController < ApplicationController
         exam_start_time: create_params[:start_time].to_datetime
       )
       if booking.save
+
+        Rails.logger.info I18n.t('controller.api.users.create.success')
         render json: { message: I18n.t('controller.api.users.create.success') }, status: :ok
       else
         raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.exam_booking_creation_failure'))

@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   private
 
   def handle_bad_request(exception)
+    Rails.logger.info exception
     render json: { error: exception }, status: :bad_request
   end
 end
