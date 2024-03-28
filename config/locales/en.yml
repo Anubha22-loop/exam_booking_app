@@ -41,6 +41,14 @@ en:
           invalid_college_failure: "College with the given ID not found"
           invalid_exam_failure: "Exam with the given ID not found or does not belong to the College"
           invalid_exam_time_failure: "Requested start time does not fall within the Exam's time window"
+      exams:
+        create:
+          success: "Exam created successfully"
+          exam_creation_failure: "Failed to create exam"
+          paramete_missing_error: "Required parameter are missing"
+          invalid_college_failure: "College with the given ID not found"
+
+
   model:
     user:
       errors:
