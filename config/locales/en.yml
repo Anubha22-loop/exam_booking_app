@@ -47,8 +47,11 @@ en:
           exam_creation_failure: "Failed to create exam"
           paramete_missing_error: "Required parameter are missing"
           invalid_college_failure: "College with the given ID not found"
-
-
+      colleges:
+        create:
+          success: "College created successfully"
+          college_creation_failure: "Failed to create College"
+          paramete_missing_error: "Required parameter are missing"
   model:
     user:
       errors:
