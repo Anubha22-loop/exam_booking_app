@@ -1,8 +1,8 @@
 class Api::UsersController < ApplicationController
   rescue_from ActionController::ParameterMissing, with: :missing_param_error
-  before_action :validate_college
-  before_action :validate_exam
-  before_action :validate_exam_window
+  before_action :validate_params_type
+  before_action :validate_college, :validate_exam, :validate_exam_window
+
 
   def create
 
@@ -44,12 +44,25 @@ class Api::UsersController < ApplicationController
       whitelisted.require(:last_name)
       whitelisted.require(:phone_number)
       whitelisted.require(:college_id)
+      whitelisted.require(:exam_id)
       whitelisted.require(:start_time)
     end
   end
 
+  def validate_params_type
+    unless create_params[:first_name].is_a?(String) &&
+           create_params[:last_name].is_a?(String) &&
+           create_params[:phone_number].is_a?(String) &&
+           create_params[:college_id].is_a?(Integer) &&
+           create_params[:exam_id].is_a?(Integer) &&
+           create_params[:start_time].is_a?(String)
+
+      render json: { error: I18n.t('controller.api.users.create.invalid_data_type') }, status: :bad_request
+    end
+  end
+
   def missing_param_error
-    render json: { error: I18n.t('controller.api.users.create.paramete_missing_error') }, status: :bad_request
+    render json: { error: I18n.t('controller.api.users.create.parameter_missing_error') }, status: :bad_request
   end
 
   def validate_college

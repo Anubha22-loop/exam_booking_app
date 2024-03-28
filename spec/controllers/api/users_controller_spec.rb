@@ -16,7 +16,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :exam_id => exam.id,
             :start_time => '2022-01-01T10:00:00'
           }
-        post :create, params: api_request
+        post :create, params: api_request, as: :json
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['message']).to eq("User created successfully")
       end
@@ -30,7 +30,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :exam_id => exam.id,
             :start_time => '2022-01-01T10:00:00'
           }
-        expect { post :create, params: api_request }.to change{ User.count }.by(1)
+        expect { post :create, params: api_request, as: :json }.to change{ User.count }.by(1)
         user = User.last
         expect(user.phone_no).to eq(api_request[:phone_number])
       end
@@ -44,7 +44,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :exam_id => exam.id,
             :start_time => '2022-01-01T10:00:00'
           }
-        expect { post :create, params: api_request }.to change{ ExamBooking.count }.by(1)
+        expect { post :create, params: api_request, as: :json }.to change{ ExamBooking.count }.by(1)
         booking = ExamBooking.last
         expect(booking.exam_start_time).to eq(api_request[:start_time].to_datetime)
       end
@@ -59,7 +59,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :start_time => '2022-01-01T10:00:00'
           }
         user = User.create(first_name: api_request[:first_name], last_name: api_request[:last_name], phone_no: api_request[:phone_number])
-        expect { post :create, params: api_request }.not_to change{ User.count }
+        expect { post :create, params: api_request, as: :json }.not_to change{ User.count }
         booking = ExamBooking.last
         expect(booking.exam_start_time).to eq(api_request[:start_time].to_datetime)
       end
@@ -68,10 +68,11 @@ RSpec.describe Api::UsersController, type: :controller do
     context 'With invalid request' do
       it 'gives bad request if one of the parameters are missing' do
         request = { :first_name => 'test', :last_name => 'user'}
-        post :create, params: request
+        post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("Required parameter are missing")
       end
+
       it 'gives bad request name is blank' do
         request = {
           :first_name => '',
@@ -81,9 +82,23 @@ RSpec.describe Api::UsersController, type: :controller do
           :exam_id => exam.id,
           :start_time => '2022-01-01T10:00:00'
         }
-        post :create, params: request
+        post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("Required parameter are missing")
+      end
+
+      it 'gives bad request if it send invalid datatype' do
+        request = {
+          :first_name => 'test',
+          :last_name => 'user',
+          :phone_number => '1234567890',
+          :college_id => college.id.to_s,
+          :exam_id => exam.id,
+          :start_time => '2022-01-01T10:00:00'
+        }
+        post :create, params: request, as: :json
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)['error']).to eq("Invalid data types for one or more params")
       end
 
       it 'gives bad request if college doesnot exist for the given college_id in api request' do
@@ -96,7 +111,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :exam_id => exam.id,
             :start_time => '2022-01-01T10:00:00'
           }
-        post :create, params: request
+        post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("College with the given ID not found")
       end
@@ -110,7 +125,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :exam_id => 6,
             :start_time => '2022-01-01T10:00:00'
           }
-        post :create, params: request
+        post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("Exam with the given ID not found or does not belong to the College")
       end
@@ -125,7 +140,7 @@ RSpec.describe Api::UsersController, type: :controller do
           :exam_id => exam1.id,
           :start_time => '2022-01-01T10:00:00'
         }
-        post :create, params: request
+        post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("Exam with the given ID not found or does not belong to the College")
       end
@@ -140,7 +155,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :exam_id => exam.id,
             :start_time => '2022-01-01T10:00:00'
           }
-        post :create, params: request
+        post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("Failed to create user")
       end
@@ -155,7 +170,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :exam_id => exam.id,
             :start_time => '2022-01-01T10:00:00'
           }
-        post :create, params: request
+        post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("Failed to associate User with the Exam")
       end
@@ -169,7 +184,7 @@ RSpec.describe Api::UsersController, type: :controller do
             :exam_id => exam.id,
             :start_time => '2022-02-01T10:00:00'
           }
-        post :create, params: request
+        post :create, params: request, as: :json
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("Requested start time does not fall within the Exam's time window")
       end
