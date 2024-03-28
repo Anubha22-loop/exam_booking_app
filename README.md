@@ -1,5 +1,7 @@
 # Exam Booking APP
 
+Book an exam of a college for the user within exam time window
+
 ### Requirements:
 
 * Ruby version -- 3.2.2
@@ -17,6 +19,7 @@
 3. bundle exec rake db:create`
 4. bundle exec rake db:migrate`
 5. `rspec` to run all test cases
+6. `rails s` to start the server
 
 ### API's
 
