@@ -11,7 +11,7 @@ class Api::ExamsController < ApplicationController
     if exam.save
       render json: { message: I18n.t('controller.api.exams.create.success') }, status: :ok
     else
-      render json: { error: I18n.t('controller.api.exams.create.exam_creation_failure') }, status: :bad_request
+      raise Errors::BadRequestError.new(I18n.t('controller.api.exams.create.exam_creation_failure'))
     end
   end
 
@@ -29,13 +29,15 @@ class Api::ExamsController < ApplicationController
 
   def validate_params_type
     unless create_params[:exam_name].is_a?(String) && create_params[:college_id].is_a?(Integer)
-      render json: { error: I18n.t('controller.api.exams.create.invalid_data_type') }, status: :bad_request
+      raise Errors::BadRequestError.new(I18n.t('controller.api.exams.create.invalid_data_type'))
     end
   end
 
   def validate_college
     college = College.find_by(id: create_params[:college_id])
-    render json: { error: I18n.t('controller.api.exams.create.invalid_college_failure') }, status: :bad_request unless college
+    unless college
+      raise Errors::BadRequestError.new(I18n.t('controller.api.exams.create.invalid_college_failure'))
+    end
   end
 
   def missing_param_error

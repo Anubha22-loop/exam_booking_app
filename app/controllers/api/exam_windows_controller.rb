@@ -12,7 +12,7 @@ class Api::ExamWindowsController < ApplicationController
     if exam_window.save
       render json: { message: I18n.t('controller.api.exam_windows.create.success') }, status: :ok
     else
-      render json: { error: I18n.t('controller.api.exam_windows.create.exam_window_creation_failure') }, status: :bad_request
+      raise Errors::BadRequestError.new(I18n.t('controller.api.exam_windows.create.exam_window_creation_failure'))
     end
   end
 
@@ -32,13 +32,15 @@ class Api::ExamWindowsController < ApplicationController
 
   def validate_params_type
     unless create_params[:exam_start_time].is_a?(String)  &&  create_params[:exam_end_time].is_a?(String) && create_params[:exam_id].is_a?(Integer)
-      render json: { error: I18n.t('controller.api.exam_windows.create.invalid_data_type') }, status: :bad_request
+      raise Errors::BadRequestError.new(I18n.t('controller.api.exam_windows.create.invalid_data_type'))
     end
   end
 
   def validate_exam
     exam = Exam.find_by(id: create_params[:exam_id])
-    render json: { error: I18n.t('controller.api.exam_windows.create.invalid_exam_failure') }, status: :bad_request unless exam
+    unless exam
+      raise Errors::BadRequestError.new(I18n.t('controller.api.exam_windows.create.invalid_exam_failure'))
+    end
   end
 
   def missing_param_error

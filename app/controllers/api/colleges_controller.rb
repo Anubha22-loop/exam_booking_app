@@ -10,7 +10,7 @@ class Api::CollegesController < ApplicationController
     if college.save
       render json: { message: I18n.t('controller.api.colleges.create.success') }, status: :ok
     else
-      render json: { error: I18n.t('controller.api.colleges.create.college_creation_failure') }, status: :bad_request
+      raise Errors::BadRequestError.new(I18n.t('controller.api.colleges.create.college_creation_failure'))
     end
   end
 
@@ -26,7 +26,7 @@ class Api::CollegesController < ApplicationController
 
   def validate_params_type
     unless create_params[:college_name].is_a?(String)
-      render json: { error: I18n.t('controller.api.colleges.create.invalid_data_type') }, status: :bad_request
+      raise Errors::BadRequestError.new(I18n.t('controller.api.colleges.create.invalid_data_type'))
     end
   end
 

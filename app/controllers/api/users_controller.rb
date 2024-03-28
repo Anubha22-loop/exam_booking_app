@@ -21,10 +21,10 @@ class Api::UsersController < ApplicationController
       if booking.save
         render json: { message: I18n.t('controller.api.users.create.success') }, status: :ok
       else
-        render json: { error: I18n.t('controller.api.users.create.exam_booking_creation_failure') }, status: :bad_request
+        raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.exam_booking_creation_failure'))
       end
     else
-      render json: { error: I18n.t('controller.api.users.create.user_creation_failure') }, status: :bad_request
+      raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.user_creation_failure'))
     end
     
   end
@@ -57,7 +57,7 @@ class Api::UsersController < ApplicationController
            create_params[:exam_id].is_a?(Integer) &&
            create_params[:start_time].is_a?(String)
 
-      render json: { error: I18n.t('controller.api.users.create.invalid_data_type') }, status: :bad_request
+      raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.invalid_data_type'))
     end
   end
 
@@ -67,17 +67,23 @@ class Api::UsersController < ApplicationController
 
   def validate_college
     college = College.find_by(id: create_params[:college_id])
-    render json: { error: I18n.t('controller.api.users.create.invalid_college_failure') }, status: :bad_request unless college
+    unless college
+      raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.invalid_college_failure'))
+    end
   end
 
   def validate_exam
     exam = Exam.find_by(id: create_params[:exam_id])
-    render json: { error: I18n.t('controller.api.users.create.invalid_exam_failure') }, status: :bad_request unless exam && exam.college_id == create_params[:college_id].to_i
+    unless exam && exam.college_id == create_params[:college_id]
+      raise Errors::BadRequestError.new(I18n.t('controller.api.users.create.invalid_exam_failure'))
+    end
   end
 
   def validate_exam_window
     exam_window = Exam.find_by(id: create_params[:exam_id])&.exam_window
     exam_time_range = exam_window&.start_time..exam_window&.end_time
-    render json: { error: I18n.t('controller.api.users.create.invalid_exam_time_failure')}, status: :bad_request unless exam_time_range.cover?(create_params[:start_time].to_datetime)
+    unless exam_time_range.cover?(create_params[:start_time].to_datetime)
+      raise Errors::BadRequestError.new( I18n.t('controller.api.users.create.invalid_exam_time_failure'))
+    end
   end
 end
