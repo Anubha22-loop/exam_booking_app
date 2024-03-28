@@ -1,5 +1,6 @@
 class Api::CollegesController < ApplicationController
   rescue_from ActionController::ParameterMissing, with: :missing_param_error
+  before_action :validate_params_type
 
   def create
     college = College.new(
@@ -23,7 +24,13 @@ class Api::CollegesController < ApplicationController
     end
   end
 
+  def validate_params_type
+    unless create_params[:college_name].is_a?(String)
+      render json: { error: I18n.t('controller.api.colleges.create.invalid_data_type') }, status: :bad_request
+    end
+  end
+
   def missing_param_error
-    render json: { error: I18n.t('controller.api.colleges.create.paramete_missing_error') }, status: :bad_request
+    render json: { error: I18n.t('controller.api.colleges.create.parameter_missing_error') }, status: :bad_request
   end
 end
