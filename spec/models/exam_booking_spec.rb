@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApiRequest, type: :model do
+RSpec.describe ExamBooking, type: :model do
   it { is_expected.to belong_to(:user) }
   it { is_expected.to belong_to(:exam) }
 

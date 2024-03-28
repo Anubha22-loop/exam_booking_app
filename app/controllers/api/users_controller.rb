@@ -13,15 +13,15 @@ class Api::UsersController < ApplicationController
         )
     
     if user.save
-      api_request = ApiRequest.new(
+      booking = ExamBooking.new(
         user_id: user.id,
         exam_id: create_params[:exam_id],
         exam_start_time: create_params[:start_time].to_datetime
       )
-      if api_request.save
+      if booking.save
         render json: { message: I18n.t('controller.api.users.create.success') }, status: :ok
       else
-        render json: { error: I18n.t('controller.api.users.create.api_request_creation_failure') }, status: :bad_request
+        render json: { error: I18n.t('controller.api.users.create.exam_booking_creation_failure') }, status: :bad_request
       end
     else
       render json: { error: I18n.t('controller.api.users.create.user_creation_failure') }, status: :bad_request

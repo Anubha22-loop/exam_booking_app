@@ -30,15 +30,15 @@ RSpec.describe Api::UsersController, type: :controller do
       end
 
       it 'should increase the count of create api_request by one' do
-        expect { post :create, params: api_request }.to change{ ApiRequest.count }.by(1)
-        request = ApiRequest.last
-        expect(request.exam_start_time).to eq(api_request[:start_time].to_datetime)
+        expect { post :create, params: api_request }.to change{ ExamBooking.count }.by(1)
+        booking = ExamBooking.last
+        expect(booking.exam_start_time).to eq(api_request[:start_time].to_datetime)
       end
 
       it 'should not create user if already exist' do
         user = User.create(first_name: api_request[:first_name], last_name: api_request[:last_name], phone_no: api_request[:phone_number])
         expect { post :create, params: api_request }.not_to change{ User.count }
-        expect { post :create, params: api_request }.to change{ ApiRequest.count }.by(1)
+        expect { post :create, params: api_request }.to change{ ExamBooking.count }.by(1)
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe Api::UsersController, type: :controller do
         expect(JSON.parse(response.body)['error']).to eq("Failed to create user")
       end
       it 'gives bad request if exam cannot be associated with user' do
-        allow_any_instance_of(ApiRequest).to receive(:save).and_return(false)
+        allow_any_instance_of(ExamBooking).to receive(:save).and_return(false)
         request = 
           {
             :first_name => 'test',

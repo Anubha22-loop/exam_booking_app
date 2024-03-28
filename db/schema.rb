@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_27_193023) do
-  create_table "api_requests", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2024_03_28_113113) do
+  create_table "colleges", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "exam_bookings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "exam_id", null: false
     t.datetime "exam_start_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exam_id"], name: "index_api_requests_on_exam_id"
-    t.index ["user_id"], name: "index_api_requests_on_user_id"
-  end
-
-  create_table "colleges", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_exam_bookings_on_exam_id"
+    t.index ["user_id"], name: "index_exam_bookings_on_user_id"
   end
 
   create_table "exam_windows", force: :cascade do |t|
@@ -52,8 +52,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_27_193023) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "api_requests", "exams"
-  add_foreign_key "api_requests", "users"
+  add_foreign_key "exam_bookings", "exams"
+  add_foreign_key "exam_bookings", "users"
   add_foreign_key "exam_windows", "exams"
   add_foreign_key "exams", "colleges"
 end

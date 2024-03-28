@@ -35,7 +35,7 @@ en:
       users:
         create:
           success: "User created successfully"
-          api_request_creation_failure: "Failed to associate User with the Exam"
+          exam_booking_creation_failure: "Failed to associate User with the Exam"
           user_creation_failure: "Failed to create user"
           paramete_missing_error: "Required parameter are missing"
           invalid_college_failure: "College with the given ID not found"
