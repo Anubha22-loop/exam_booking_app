@@ -60,6 +60,8 @@ RSpec.describe Api::UsersController, type: :controller do
           }
         user = User.create(first_name: api_request[:first_name], last_name: api_request[:last_name], phone_no: api_request[:phone_number])
         expect { post :create, params: api_request }.not_to change{ User.count }
+        booking = ExamBooking.last
+        expect(booking.exam_start_time).to eq(api_request[:start_time].to_datetime)
       end
     end
 
@@ -70,6 +72,20 @@ RSpec.describe Api::UsersController, type: :controller do
         expect(response).to have_http_status(:bad_request)
         expect(JSON.parse(response.body)['error']).to eq("Required parameter are missing")
       end
+      it 'gives bad request name is blank' do
+        request = {
+          :first_name => '',
+          :last_name => 'user',
+          :phone_number => '1234567890',
+          :college_id => college.id,
+          :exam_id => exam.id,
+          :start_time => '2022-01-01T10:00:00'
+        }
+        post :create, params: request
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)['error']).to eq("Required parameter are missing")
+      end
+
       it 'gives bad request if college doesnot exist for the given college_id in api request' do
         request = 
           {
